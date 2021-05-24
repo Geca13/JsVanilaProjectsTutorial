@@ -71,4 +71,84 @@ const menu = [
     img: "./images/item-9.jpeg",
     desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
   },
+  {
+    id: 10,
+    title: "bison steak",
+    category: "dinner",
+    price: 22.99,
+    img: "./images/item-10.jpeg",
+    desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
+  },
 ];
+
+const populateMenu = document.querySelector('.section-center');
+
+const showButtons = document.querySelector('.btn-container');
+
+
+
+window.addEventListener('DOMContentLoaded', function(){
+
+  displeyMenuItems(menu);
+  displeyMenuButtons();
+
+  
+});
+
+
+
+
+function displeyMenuItems(menuItems) {
+
+  let displeyMenu = menuItems.map(function(item){
+
+    return ` <article class="menu-item">
+          <img src="${item.img}" class="photo" alt="${item.title}">
+          <div class="item-info">
+            <header>
+            <h4>${item.title}</h4>
+            <h4 class="price">${item.price}</h4>
+            </header>
+            <p class="item-text">${item.desc} </p>
+          </div>
+        </article>`
+  });
+  displeyMenu = displeyMenu.join('')
+
+  populateMenu.innerHTML = displeyMenu;
+  
+}
+
+function displeyMenuButtons() {
+
+  const categories = menu.reduce(function(values,item){
+    if(!values.includes(item.category)) {
+      values.push(item.category);
+    }
+   return values
+  },['all'])
+  const categoryBtns = categories.map(function(category){
+    return `<button type="button" data-id=${category} class="filter-btn">${category}</button>`
+  }).join('');
+    showButtons.innerHTML = categoryBtns;
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(function(btn) {
+  btn.addEventListener('click', function(e){
+
+    const category = e.currentTarget.dataset.id;
+    const menuCategory = menu.filter(function(menuItem){
+       if(menuItem.category === category) {
+         return menuItem;
+       }
+       
+    });
+       if(category ==='all') {
+         displeyMenuItems(menu);
+       } else {
+         displeyMenuItems(menuCategory);
+       }
+
+  });
+});
+  
+}
